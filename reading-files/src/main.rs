@@ -4,15 +4,7 @@ use std::path::Path;
 
 use std::any::type_name;
 
-struct Edge {
-    to: u32,
-    dist: u32,
-}
 
-struct Node {
-    id: u32,
-    edges: Vec<Edge>,
-}
 
 fn type_of<T>(_: T) -> &'static str {
     type_name::<T>()
@@ -27,14 +19,28 @@ where
     Ok(io::BufReader::new(file).lines())
 }
 
-fn main() {
-    if let Ok(lines) = read_lines("files/test01.txt") {
+fn create_graph (filename: &str) -> Vec<Vec<u32>> {
+    let mut numbs = Vec::new();
+
+    if let Ok(lines) = read_lines(filename) {
         for line in lines {
             if let Ok(ip) = line {
-                println!("{}", ip);
+              let row =  ip.split_whitespace().map(|s| s.parse::<u32>().unwrap()).collect::<Vec<u32>>();
+                numbs.push(row);
             }
         }
-    } else {
-        panic!("File not found.");
     }
+    
+    numbs
+
+}
+
+fn main() {
+    
+    let numbs = create_graph("files/test01.txt");
+
+    for num in numbs {
+        println!("{:?}", num);
+    }    
+
 }
