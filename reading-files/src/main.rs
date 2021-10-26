@@ -5,7 +5,6 @@ use std::path::Path;
 use std::any::type_name;
 
 
-
 fn type_of<T>(_: T) -> &'static str {
     type_name::<T>()
 }
@@ -19,7 +18,7 @@ where
     Ok(io::BufReader::new(file).lines())
 }
 
-fn create_graph (filename: &str) -> Vec<Vec<u32>> {
+fn read_file (filename: &str) -> Vec<Vec<u32>> {
     let mut numbs = Vec::new();
 
     if let Ok(lines) = read_lines(filename) {
@@ -37,7 +36,7 @@ fn create_graph (filename: &str) -> Vec<Vec<u32>> {
 
 fn main() {
     
-    let numbs = create_graph("files/test01.txt");
+    let numbs = read_file("files/test01.txt");
 
     for num in numbs {
         println!("{:?}", num);
