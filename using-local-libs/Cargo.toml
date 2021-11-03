@@ -1,5 +1,5 @@
 [package]
-name = "using_local_libs"
+name = "using-local-libs"
 version = "0.1.0"
 edition = "2021"
 
