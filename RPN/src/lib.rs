@@ -97,6 +97,14 @@ mod tests {
         let _ = tokenize(example);
 
     }
+
+    #[test]
+    #[should_panic]
+    fn it_panics_for_invalid_decimal_number() {
+        let example = "3.5.4*4";
+        let _ = tokenize(example);
+
+    }
  
    #[test]
     fn it_tokenizes_large_numbers() {
