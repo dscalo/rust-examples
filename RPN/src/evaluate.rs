@@ -12,9 +12,9 @@ pub fn evaluate_postfix(tokens: Vec<Token>) -> f64 {
         let r_val = stack.pop_front();
         let l_val = stack.pop_front();
 
-        match (r_val, l_val) {
-          (Some(r), Some(l)) => {
-            let val = calculate(r, l, token);
+        match (l_val, r_val) {
+          (Some(l), Some(r)) => {
+            let val = calculate(l, r, token);
             stack.push_front(val);
           }
           _ => panic!("{}", "Invalid stack"),
@@ -24,16 +24,55 @@ pub fn evaluate_postfix(tokens: Vec<Token>) -> f64 {
     }
   }
 
-  0.0
+  let res = stack.pop_front();
+  if stack.len() > 0 {
+    panic!("{}", "Stack contains additional values");
+  }
+  if let Some(val) = res {
+    return val;
+  } else {
+    panic!("{}", "Invalid stack");
+  }
 }
 
-fn calculate(r: f64, l: f64, operator: Token) -> f64 {
+fn calculate(l: f64, r: f64, operator: Token) -> f64 {
   match (operator) {
-    Token::Add => return r + l,
-    Token::Subtract => return r - l,
-    Token::Multiply => return r * l,
-    Token::Divide => return r / l,
-    Token::Exponent => return f64::powf(r, l),
+    Token::Add => return l + r,
+    Token::Subtract => return l - r,
+    Token::Multiply => return l * r,
+    Token::Divide => return l / r,
+    Token::Exponent => return f64::powf(l, r),
     _ => return 0.0,
+  }
+}
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[test]
+  fn it_evaluates_adding_2_numbers() {
+    let example = vec![Token::Numb(2.0), Token::Numb(4.0), Token::Add];
+
+    assert_eq!(evaluate_postfix(example), 6.0);
+  }
+
+  #[test]
+  fn it_evaluates_complex_equation() {
+    let example = vec![
+      Token::Numb(5.0),
+      Token::Numb(2.0),
+      Token::Numb(3.0),
+      Token::Numb(8.0),
+      Token::Subtract,
+      Token::Numb(5.0),
+      Token::Exponent,
+      Token::Numb(2.0),
+      Token::Exponent,
+      Token::Divide,
+      Token::Add,
+    ];
+
+    assert_eq!(evaluate_postfix(example).round(), 5.0);
   }
 }
