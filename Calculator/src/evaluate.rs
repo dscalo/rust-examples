@@ -36,7 +36,7 @@ pub fn evaluate_postfix(tokens: Vec<Token>) -> f64 {
 }
 
 fn calculate(l: f64, r: f64, operator: Token) -> f64 {
-  match (operator) {
+  match operator {
     Token::Add => return l + r,
     Token::Subtract => return l - r,
     Token::Multiply => return l * r,
