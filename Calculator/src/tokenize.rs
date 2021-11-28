@@ -34,7 +34,12 @@ pub fn tokenize(input: &str) -> Vec<Token> {
                     '*'|'x'|'X' => tokens.push(Token::Multiply),
                     '/' => tokens.push(Token::Divide),
                     '^' => tokens.push(Token::Exponent),
-                    '(' => tokens.push(Token::LParen),
+                    '(' => {
+                        if matches!(tokens[tokens.len()-1], Token::Numb(_))  {
+                            tokens.push(Token::Multiply)
+                        }
+                        tokens.push(Token::LParen)
+                    },
                     ')' => tokens.push(Token::RParen),
                     ' ' => {}
                     _ => {
@@ -106,5 +111,21 @@ mod tests {
             Token::Numb(12.34)
         ];
         assert_eq!(tokenize(example),expected);
+    }
+
+    #[test]
+    fn it_adds_multiply_when_number_is_next_to_lparen() {
+        let example = "3(2+1)";
+        let expected = vec![
+            Token::Numb(3.0),
+            Token::Multiply,
+            Token::LParen,
+            Token::Numb(2.0),
+            Token::Add,
+            Token::Numb(1.0),
+            Token::RParen
+        ];
+
+        assert_eq!(tokenize(example), expected);
     }
 }

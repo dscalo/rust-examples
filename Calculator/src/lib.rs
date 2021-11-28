@@ -1,9 +1,7 @@
-
 mod evaluate;
 mod postfix;
 mod token;
 mod tokenize;
-
 
 pub fn solve(expression: &str) -> f64 {
     let tokens = tokenize::tokenize(expression);
@@ -12,6 +10,3 @@ pub fn solve(expression: &str) -> f64 {
     
     ans
 }
-
-
-

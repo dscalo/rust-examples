@@ -12,8 +12,14 @@ fn solve_complex_equation() {
     assert_eq!(Calculator::solve(example).round(), 5.0);
   }
 
-  #[test]
+#[test]
 fn solve_large_numbers_equation() {
     let example = " 500+300*850";
     assert_eq!(Calculator::solve(example), 255500.0);
+}
+
+#[test]
+fn solve_equation_with_no_multiply_sign() {
+  let example = "6/2(1+2)";
+  assert_eq!(Calculator::solve(example), 9.0);
 }
